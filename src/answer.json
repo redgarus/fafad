@@ -1,0 +1,1 @@
+{"answer": "var a: int = 5;\n\nprint(a);"}

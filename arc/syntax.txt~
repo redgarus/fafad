@@ -1,0 +1,42 @@
+input               = statement ";" input 
+                    | empty
+
+digit               = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+letter              = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z"
+integer             = [digit]
+identifier          = letter{letter|digit}
+
+statement           = warStmt
+                    | ifStmt
+                    | aliveStmt
+                    | funcStmt
+                    | parenStmts
+                    | expression
+                    | empty
+
+statements          = statement ";" statements
+                    | empty
+
+type                = "int"
+                    | "array" "<" type ">" "[" integer "]"
+
+args                = args, type identifier
+                    | type identifier
+
+parenStmts          = "{" statements "}"
+warStmt             = "war" identifier ":" type "=" expression
+ifStmt              = "if" "[" expression "]" statement
+aliveStmt           = "alive" "by" "[" expression "]" statement
+funcStmt            = "fn" identifier ":" type "[" args "]" statement
+retStmt             = "return" expression
+
+expression          = intExpr {"<" | ">" | "<=" | ">=" | "==" | "!=" intExpr}
+intExpr             = term {"+" | "-" term}
+term                = factor {"*" | "/" factor}
+factor              = integer
+                    | identifier [{"[" exprs "]"} |  {"(" exprs ")"}] 
+                    | "(" expression ")"
+                    | "[" exprs "]"
+
+exprs               = exprs "," expression
+                    | expression
